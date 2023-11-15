@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useCallback, useState } from "react";
 
 function App() {
@@ -17,14 +17,17 @@ function App() {
     if (characterAllowed) {
       str += "@#$%^&*()_+-=";
     }
-    for (let i = 1; i <= array.length; i++) {
+    for (let i = 1; i <= length; i++) {
       let char = Math.floor(Math.random() * str.length + 1);
-      pass = str.charAt(char);
+      pass += str.charAt(char);
     }
 
     setPassword(pass);
   }, [length, numberAllowed, characterAllowed, setPassword]);
 
+  useEffect(() => {
+    passwordGenerator();
+  }, [length, numberAllowed, characterAllowed, passwordGenerator]);
   return (
     <>
       <div className="w-full max-w-lg mx-auto shadow-md rounded-lg px-8 py-4 my-10 bg-gray-800">
