@@ -1,11 +1,24 @@
 import React, { useEffect } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 
 function App() {
   const [length, setLenght] = useState(8);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [characterAllowed, setCharacterAllowed] = useState(false);
   const [Password, setPassword] = useState("");
+
+  /*
+ useRef hook
+  The following code defines a ref for an input element (passwordRef) and a function (copyPassWordToClipboard) 
+  intended to copy the generated password to the clipboard. It uses the Clipboard API to achieve this.
+*/
+  const passwordRef = useRef(null); // create input ref
+
+  const copyPassWordToClipboard = useCallback(() => {
+    passwordRef.current?.select(); // Select the text inside the input element
+    passwordRef.current?.setSelectionRange(0, 99); // set the selection range for copying to clipboard
+    window.navigator.clipboard.writeText(Password);
+  }, [Password]);
 
   const passwordGenerator = useCallback(() => {
     let pass = "";
@@ -41,8 +54,12 @@ function App() {
             className="outline-none w-full py-2 px-3"
             placeholder="password"
             readOnly
+            ref={passwordRef}
           />
-          <button className="outline-none bg-green-600 px-4 py-05 shrink-0  font-bold">
+          <button
+            onClick={copyPassWordToClipboard}
+            className="outline-none bg-green-600 px-4 py-05 shrink-0  font-bold"
+          >
             Copy
           </button>
         </div>
